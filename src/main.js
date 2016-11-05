@@ -1,4 +1,5 @@
 import environment from './environment';
+import AuthService from 'AuthService';
 
 //Configure Bluebird Promises.
 //Note: You may want to use environment-specific configuration.
@@ -21,5 +22,9 @@ export function configure(aurelia) {
     aurelia.use.plugin('aurelia-testing');
   }
 
-  aurelia.start().then(() => aurelia.setRoot());
+  aurelia.start().then(() => {
+    var auth = aurelia.container.get(AuthService)
+    let root = auth.isAuthenticated() ?  'app' : 'login'
+    aurelia.setRoot(root);
+  })
 }
